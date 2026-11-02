@@ -2963,6 +2963,14 @@ body {
   color: #fff9fc;
 }
 
+.thumb-desc {
+  color: var(--text-soft);
+  font-weight: 500;
+  text-shadow:
+    0 0 10px rgba(255, 240, 247, 0.95),
+    0 1px 0 rgba(255, 250, 253, 0.7);
+}
+
 .rail-empty,
 .candidate-empty,
 .empty-page {

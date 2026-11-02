@@ -47,6 +47,23 @@ def _prepare_thumbnail(image: Image.Image) -> Image.Image:
     return image.convert("RGB")
 
 
+def _write_thumbnail(source_path: Path, thumb_path: Path, image: Image.Image) -> None:
+    """Write the catalog cutout if possible, otherwise a plain photo thumbnail."""
+    try:
+        from tools import digitize_thumbs
+
+        wrote, _ = digitize_thumbs.render_catalog_thumb(source_path, thumb_path)
+        if wrote:
+            return
+    except Exception:
+        # Vision or the Swift toolchain is unavailable: keep the app working.
+        pass
+
+    thumb = _prepare_thumbnail(image)
+    thumb.thumbnail(config.THUMB_MAX_SIZE, Image.LANCZOS)
+    thumb.save(thumb_path, format="JPEG", quality=86, optimize=True)
+
+
 def save_image(
     data: bytes, item_type: str, weather: str, original_filename: str
 ) -> Tuple[str, str]:
@@ -90,10 +107,7 @@ def save_image(
 
     try:
         original_path.write_bytes(data)
-
-        thumb = _prepare_thumbnail(image)
-        thumb.thumbnail(config.THUMB_MAX_SIZE, Image.LANCZOS)
-        thumb.save(thumb_path, format="JPEG", quality=86, optimize=True)
+        _write_thumbnail(original_path, thumb_path, image)
     except Exception:
         original_path.unlink(missing_ok=True)
         thumb_path.unlink(missing_ok=True)
@@ -134,9 +148,7 @@ def import_existing_image(
             probe.verify()
         with Image.open(original_path) as image:
             image.load()
-            thumb = _prepare_thumbnail(image)
-            thumb.thumbnail(config.THUMB_MAX_SIZE, Image.LANCZOS)
-            thumb.save(thumb_path, format="JPEG", quality=86, optimize=True)
+            _write_thumbnail(original_path, thumb_path, image)
     except Exception:
         thumb_path.unlink(missing_ok=True)
         raise ImageValidationError(

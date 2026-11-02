@@ -312,15 +312,22 @@
     function finish() {
       if (imgEl.dataset.fadeToken !== token) return;
       imgEl.src = newSrc;
-      requestAnimationFrame(function () {
+      function reveal() {
         if (imgEl.dataset.fadeToken === token) {
           imgEl.classList.remove("is-fading");
         }
-      });
+      }
+      // The rAF keeps the fade smooth; the timeout is a safety net for pages
+      // that are not painting (background tabs, headless browsers).
+      requestAnimationFrame(reveal);
+      setTimeout(reveal, 150);
     }
     preloader.onload = finish;
     preloader.onerror = finish;
     preloader.src = newSrc;
+    // If the preloader never settles (offline, throttled tab), still reveal the
+    // widget instead of leaving it stuck at 25% opacity.
+    setTimeout(finish, 1200);
   }
 
   /* ---------------------------------------------------------------- weather */

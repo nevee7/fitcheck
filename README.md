@@ -79,6 +79,24 @@ The database stores image paths relative to `uploads/`, never the image bytes.
 To start over, stop the server and delete `wardrobe.db` plus the contents of
 `uploads/`; both are recreated on the next start.
 
+## Catalog-style photos
+
+Thumbnails are rendered like a digital wardrobe, not like camera-roll photos:
+Apple Vision cuts the garment out of the background, then it is placed on a
+soft blush gradient with a subtle shadow. This happens automatically for new
+uploads on macOS 14+ (the Xcode Command Line Tools provide `swiftc`).
+
+To re-render the whole closet — for example after changing the background or
+after adding photos in Finder — run:
+
+```bash
+.venv-app/bin/python tools/digitize_thumbs.py
+```
+
+Pass specific files or folders to limit the run. Originals are never modified;
+only `<name>_thumb.jpg` is replaced. On a machine without Vision, uploads fall
+back to plain photo thumbnails and everything else keeps working.
+
 ## Weather
 
 - Browser geolocation is used only when permission is **already granted** — the
@@ -144,6 +162,7 @@ static/
   js/            api, ui, main, wardrobe, outfits
 templates/       index, wardrobe, outfits
 uploads/         runtime images in hot/cold/both folders (gitignored)
+tools/           Vision cutout helper + catalog thumbnail script
 wardrobe.db      runtime database (gitignored)
 ```
 

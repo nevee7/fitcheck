@@ -12,6 +12,7 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+tools/.bin/
 
 # OS / editor
 .DS_Store

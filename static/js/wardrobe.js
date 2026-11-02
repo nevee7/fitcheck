@@ -393,7 +393,7 @@
     node.innerHTML =
       '<div class="item-modal-media">' +
       '<img src="' +
-      esc(UI.imgUrl(item.path)) +
+      esc(UI.itemImage(item)) +
       '" alt="' +
       esc(description) +
       '" /></div>' +
