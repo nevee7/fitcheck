@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fbe7ef" />
+    <meta
+      name="description"
+      content="Curate the pieces Fitcheck uses to build your outfits."
+    />
+    <title>Fitcheck — Wardrobe</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Fitcheck home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8.6a2.2 2.2 0 1 1 2.2-2.2c0 1.4-1 2-2.2 2.7v1.1" />
+            <path d="M12 10.2 3.9 15.7c-.9.6-.5 2 .6 2h15c1.1 0 1.5-1.4.6-2L12 10.2Z" />
+          </svg>
+        </span>
+        <span class="brand-name">Fitcheck</span>
+      </a>
+
+      <div class="topbar-right">
+        <nav class="top-nav" aria-label="Main navigation">
+          <a href="/">Today's look</a>
+          <a href="/outfits">Outfits</a>
+        </nav>
+        <button
+          class="weather-chip"
+          id="weather-chip"
+          type="button"
+          aria-label="Weather — tap to refresh"
+        >
+          <span class="chip-emoji" aria-hidden="true">☀️</span>
+          <span class="chip-temp">—</span>
+          <span class="chip-kind">loading</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <div class="page-head">
+        <div>
+          <a class="back-link" href="/">← Today's look</a>
+          <h1>Wardrobe</h1>
+          <p>
+            Upload pieces once, then let Fitcheck combine them. Every item is
+            tagged cold, hot, or both so the generator stays useful.
+          </p>
+        </div>
+        <span class="page-count" id="wardrobe-count">0 pieces</span>
+      </div>
+
+      <section class="card upload-panel" aria-labelledby="upload-title">
+        <div class="upload-head">
+          <div>
+            <h2 id="upload-title">Add a piece</h2>
+            <p>JPG, PNG, WEBP, or GIF · up to 10 MB</p>
+          </div>
+          <button class="btn btn-ghost" id="scan-folders" type="button">
+            Scan folders
+          </button>
+        </div>
+
+        <form id="upload-form" novalidate>
+          <div class="upload-grid">
+            <div>
+              <input
+                type="file"
+                id="file-input"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                hidden
+              />
+              <div
+                class="dropzone"
+                id="dropzone"
+                role="button"
+                tabindex="0"
+                aria-label="Choose or drop an image"
+              >
+                <div class="dropzone-prompt" id="dropzone-prompt">
+                  <span class="dropzone-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 16V4" />
+                      <path d="m7 9 5-5 5 5" />
+                      <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+                    </svg>
+                  </span>
+                  <strong>Drop an image</strong>
+                  <span>or click to browse</span>
+                </div>
+                <img class="file-preview" id="file-preview" alt="" hidden />
+                <button
+                  type="button"
+                  class="preview-clear"
+                  id="preview-clear"
+                  aria-label="Remove selected image"
+                  hidden
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            <div class="upload-fields">
+              <div class="field">
+                <label for="description">Description</label>
+                <input
+                  class="input"
+                  id="description"
+                  name="description"
+                  type="text"
+                  maxlength="200"
+                  autocomplete="off"
+                  placeholder="e.g. Cream cable-knit sweater"
+                />
+              </div>
+
+              <div class="field-row">
+                <div class="field">
+                  <span class="field-label">Weather</span>
+                  <div class="segmented" id="weather-seg" role="radiogroup" aria-label="Weather">
+                    <label>
+                      <input type="radio" name="weather" value="cold" checked />
+                      <span>Cold</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="weather" value="hot" />
+                      <span>Hot</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="weather" value="both" />
+                      <span>Both</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <span class="field-label">Type</span>
+                  <div class="segmented" id="type-seg" role="radiogroup" aria-label="Type">
+                    <label>
+                      <input type="radio" name="type" value="top" checked />
+                      <span>Top</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="type" value="bottom" />
+                      <span>Bottom</span>
+                    </label>
+                    <label>
+                      <input type="radio" name="type" value="shoes" />
+                      <span>Shoes</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn btn-primary" id="upload-btn" type="submit">
+                  Upload piece
+                </button>
+                <div class="progress" id="upload-progress" hidden>
+                  <div class="bar" id="upload-bar"></div>
+                </div>
+              </div>
+
+              <p class="form-error" id="upload-error" role="alert" hidden></p>
+            </div>
+          </div>
+        </form>
+
+        <p class="folder-guide">
+          Prefer Finder? Drop images into
+          <code>uploads/&lt;type&gt;/hot</code>,
+          <code>uploads/&lt;type&gt;/cold</code>, or
+          <code>uploads/&lt;type&gt;/both</code> (type is top, bottom, or
+          shoes), then press <strong>Scan folders</strong>. The filename becomes
+          the description — use <code>both</code> for pieces that work in either
+          weather.
+        </p>
+      </section>
+
+      <section class="wardrobe-rails" id="wardrobe-rails" aria-label="Wardrobe pieces">
+        <section class="rail-section" data-type="top">
+          <div class="rail-head">
+            <h2>Tops <span class="count" data-count="top">0</span></h2>
+            <div class="rail-btns">
+              <button class="icon-btn rail-prev" type="button" data-rail="top" aria-label="Scroll tops left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m14.5 5-7 7 7 7" />
+                </svg>
+              </button>
+              <button class="icon-btn rail-next" type="button" data-rail="top" aria-label="Scroll tops right">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="rail-strip" id="rail-top" data-rail="top"></div>
+          <p class="rail-empty" data-empty="top" hidden>
+            No tops yet — upload one above.
+          </p>
+        </section>
+
+        <section class="rail-section" data-type="bottom">
+          <div class="rail-head">
+            <h2>Bottoms <span class="count" data-count="bottom">0</span></h2>
+            <div class="rail-btns">
+              <button class="icon-btn rail-prev" type="button" data-rail="bottom" aria-label="Scroll bottoms left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m14.5 5-7 7 7 7" />
+                </svg>
+              </button>
+              <button class="icon-btn rail-next" type="button" data-rail="bottom" aria-label="Scroll bottoms right">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="rail-strip" id="rail-bottom" data-rail="bottom"></div>
+          <p class="rail-empty" data-empty="bottom" hidden>
+            No bottoms yet — upload one above.
+          </p>
+        </section>
+
+        <section class="rail-section" data-type="shoes">
+          <div class="rail-head">
+            <h2>Shoes <span class="count" data-count="shoes">0</span></h2>
+            <div class="rail-btns">
+              <button class="icon-btn rail-prev" type="button" data-rail="shoes" aria-label="Scroll shoes left">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m14.5 5-7 7 7 7" />
+                </svg>
+              </button>
+              <button class="icon-btn rail-next" type="button" data-rail="shoes" aria-label="Scroll shoes right">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="rail-strip" id="rail-shoes" data-rail="shoes"></div>
+          <p class="rail-empty" data-empty="shoes" hidden>
+            No shoes yet — upload a pair above.
+          </p>
+        </section>
+      </section>
+    </main>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/ui.js"></script>
+    <script src="/static/js/wardrobe.js"></script>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fbe7ef" />
+    <meta
+      name="description"
+      content="Fitcheck — a local, weather-aware digital wardrobe and outfit generator."
+    />
+    <title>Fitcheck — Today's look</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Fitcheck home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8.6a2.2 2.2 0 1 1 2.2-2.2c0 1.4-1 2-2.2 2.7v1.1" />
+            <path d="M12 10.2 3.9 15.7c-.9.6-.5 2 .6 2h15c1.1 0 1.5-1.4.6-2L12 10.2Z" />
+          </svg>
+        </span>
+        <span class="brand-name">Fitcheck</span>
+      </a>
+
+      <div class="topbar-right">
+        <button
+          class="weather-chip"
+          id="weather-chip"
+          type="button"
+          aria-label="Weather — tap to refresh"
+        >
+          <span class="chip-emoji" aria-hidden="true">☀️</span>
+          <span class="chip-temp">—</span>
+          <span class="chip-kind">loading</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="home-layout">
+      <section class="look-panel" aria-labelledby="look-title">
+        <div class="look-heading">
+          <div>
+            <p class="eyebrow">Weather-aware wardrobe</p>
+            <h1 id="look-title">Today's look</h1>
+          </div>
+          <p class="look-sub">Roll a fit that fits the forecast.</p>
+        </div>
+
+        <div class="banner" id="weather-banner" hidden>
+          <span class="banner-text">
+            Live weather is unavailable. Pick a forecast so Fitcheck can style
+            your wardrobe:
+          </span>
+          <span class="mini-seg" role="group" aria-label="Choose manual weather">
+            <button type="button" data-weather="cold">Cold</button>
+            <button type="button" data-weather="hot">Hot</button>
+          </span>
+        </div>
+
+        <div class="widgets" id="widgets">
+          <article class="widget is-empty" data-type="top" aria-label="Top">
+            <div class="widget-media">
+              <img class="widget-img" alt="" draggable="false" />
+              <span class="cat-pill">Top</span>
+              <span class="mismatch-dot" hidden title="This piece is outside today's weather band"></span>
+              <button class="arrow arrow-prev" type="button" data-dir="-1" aria-label="Previous top" aria-disabled="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m14.5 5-7 7 7 7" />
+                </svg>
+              </button>
+              <button class="arrow arrow-next" type="button" data-dir="1" aria-label="Next top" aria-disabled="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+              <div class="widget-empty">
+                <span class="empty-icon" aria-hidden="true">+</span>
+                <p class="empty-text">Loading your tops…</p>
+                <a class="empty-link" href="/wardrobe" hidden>Add a top</a>
+              </div>
+            </div>
+            <div class="widget-meta">
+              <span class="widget-desc">—</span>
+              <span class="widget-weather"></span>
+            </div>
+          </article>
+
+          <article class="widget is-empty" data-type="bottom" aria-label="Bottom">
+            <div class="widget-media">
+              <img class="widget-img" alt="" draggable="false" />
+              <span class="cat-pill">Bottom</span>
+              <span class="mismatch-dot" hidden title="This piece is outside today's weather band"></span>
+              <button class="arrow arrow-prev" type="button" data-dir="-1" aria-label="Previous bottom" aria-disabled="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m14.5 5-7 7 7 7" />
+                </svg>
+              </button>
+              <button class="arrow arrow-next" type="button" data-dir="1" aria-label="Next bottom" aria-disabled="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+              <div class="widget-empty">
+                <span class="empty-icon" aria-hidden="true">+</span>
+                <p class="empty-text">Loading your bottoms…</p>
+                <a class="empty-link" href="/wardrobe" hidden>Add a bottom</a>
+              </div>
+            </div>
+            <div class="widget-meta">
+              <span class="widget-desc">—</span>
+              <span class="widget-weather"></span>
+            </div>
+          </article>
+
+          <article class="widget is-empty" data-type="shoes" aria-label="Shoes">
+            <div class="widget-media">
+              <img class="widget-img" alt="" draggable="false" />
+              <span class="cat-pill">Shoes</span>
+              <span class="mismatch-dot" hidden title="This piece is outside today's weather band"></span>
+              <button class="arrow arrow-prev" type="button" data-dir="-1" aria-label="Previous shoes" aria-disabled="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m14.5 5-7 7 7 7" />
+                </svg>
+              </button>
+              <button class="arrow arrow-next" type="button" data-dir="1" aria-label="Next shoes" aria-disabled="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m9.5 5 7 7-7 7" />
+                </svg>
+              </button>
+              <div class="widget-empty">
+                <span class="empty-icon" aria-hidden="true">+</span>
+                <p class="empty-text">Loading your shoes…</p>
+                <a class="empty-link" href="/wardrobe" hidden>Add shoes</a>
+              </div>
+            </div>
+            <div class="widget-meta">
+              <span class="widget-desc">—</span>
+              <span class="widget-weather"></span>
+            </div>
+          </article>
+        </div>
+
+        <p class="fallback-note" id="fallback-note" hidden></p>
+
+        <div class="look-actions">
+          <button class="btn btn-primary btn-generate" id="generate" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 3h5v5" />
+              <path d="M4 20 21 3" />
+              <path d="M21 16v5h-5" />
+              <path d="m15 15 6 6" />
+              <path d="m4 4 5 5" />
+            </svg>
+            <span>Generate</span>
+          </button>
+
+          <button
+            class="btn btn-like"
+            id="like"
+            type="button"
+            aria-pressed="false"
+            aria-label="Like this look"
+          >
+            <svg class="heart" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 20.3 4.7 13a4.7 4.7 0 0 1 6.6-6.7l.7.7.7-.7A4.7 4.7 0 1 1 19.3 13L12 20.3Z" stroke-linejoin="round" />
+            </svg>
+            <span class="like-label">Like this look</span>
+          </button>
+        </div>
+      </section>
+
+      <aside class="side-rail" aria-label="Sections">
+        <nav class="rail-nav" aria-label="App sections">
+          <a class="rail-card" href="/outfits">
+            <span class="rail-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round">
+                <path d="M12 20.3 4.7 13a4.7 4.7 0 0 1 6.6-6.7l.7.7.7-.7A4.7 4.7 0 1 1 19.3 13L12 20.3Z" />
+              </svg>
+            </span>
+            <span class="rail-text">
+              <span class="rail-title">Outfits</span>
+              <span class="rail-sub">Your saved looks</span>
+            </span>
+            <span class="rail-chev" aria-hidden="true">›</span>
+          </a>
+
+          <a class="rail-card" href="/wardrobe">
+            <span class="rail-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 8.6a2.2 2.2 0 1 1 2.2-2.2c0 1.4-1 2-2.2 2.7v1.1" />
+                <path d="M12 10.2 3.9 15.7c-.9.6-.5 2 .6 2h15c1.1 0 1.5-1.4.6-2L12 10.2Z" />
+              </svg>
+            </span>
+            <span class="rail-text">
+              <span class="rail-title">Wardrobe</span>
+              <span class="rail-sub">Upload &amp; manage pieces</span>
+            </span>
+            <span class="rail-chev" aria-hidden="true">›</span>
+          </a>
+        </nav>
+
+        <section class="rail-weather" aria-label="Weather details">
+          <div class="rail-weather-head">
+            <span class="section-label">Weather</span>
+            <button class="icon-btn" id="refresh-weather" type="button" aria-label="Refresh weather">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12a9 9 0 1 1-2.6-6.4" />
+                <path d="M21 3v6h-6" />
+              </svg>
+            </button>
+          </div>
+          <div id="rail-weather-body">
+            <span class="skeleton-line" aria-hidden="true"></span>
+          </div>
+        </section>
+
+        <p class="rail-tip">
+          Tip: use the arrows to swap a single piece without rerolling the whole
+          look. The heart saves only the current combination.
+        </p>
+      </aside>
+    </main>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/ui.js"></script>
+    <script src="/static/js/main.js"></script>
+  </body>
+</html>

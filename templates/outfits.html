@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fbe7ef" />
+    <meta
+      name="description"
+      content="All the looks you have saved in Fitcheck."
+    />
+    <title>Fitcheck — Outfits</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Fitcheck home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 8.6a2.2 2.2 0 1 1 2.2-2.2c0 1.4-1 2-2.2 2.7v1.1" />
+            <path d="M12 10.2 3.9 15.7c-.9.6-.5 2 .6 2h15c1.1 0 1.5-1.4.6-2L12 10.2Z" />
+          </svg>
+        </span>
+        <span class="brand-name">Fitcheck</span>
+      </a>
+
+      <div class="topbar-right">
+        <nav class="top-nav" aria-label="Main navigation">
+          <a href="/">Today's look</a>
+          <a href="/wardrobe">Wardrobe</a>
+        </nav>
+        <button
+          class="weather-chip"
+          id="weather-chip"
+          type="button"
+          aria-label="Weather — tap to refresh"
+        >
+          <span class="chip-emoji" aria-hidden="true">☀️</span>
+          <span class="chip-temp">—</span>
+          <span class="chip-kind">loading</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <div class="page-head">
+        <div>
+          <a class="back-link" href="/">← Today's look</a>
+          <h1>Outfits</h1>
+          <p>
+            Every combination you have hearted, newest first. Weather is a
+            snapshot from the day the look was saved.
+          </p>
+        </div>
+        <span class="page-count" id="outfits-count">0 looks</span>
+      </div>
+
+      <div class="outfits-groups" id="outfits-groups" aria-live="polite">
+        <div class="empty-page">
+          <span class="skeleton-line" aria-hidden="true"></span>
+        </div>
+      </div>
+    </main>
+
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/ui.js"></script>
+    <script src="/static/js/outfits.js"></script>
+  </body>
+</html>
